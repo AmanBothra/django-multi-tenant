@@ -16,7 +16,7 @@ git clone https://github.com/AmanBothra/django-multi-tenant.git
 
 - `Virtualenv`
 
-- `Linux System` not working in window system 
+- `Linux System` not working in window system
 
 ### Steps
 
@@ -28,20 +28,18 @@ git clone https://github.com/AmanBothra/django-multi-tenant.git
 - `pip install -r requirements.txt`
 
 - Cretae 3 Database in PostgreSQL
-    
-    ```
-    - company1
-    - company2
-    - company3
-    ```
-    
+  ```
+  - company1
+  - company2
+  - company3
+  ```
 - add 3 lines like this
 
-    ```
-    - 127.0.0.1       company.local
-    - 127.0.0.1       two.company.local
-    - 127.0.0.1       three.company.local
-    ```
+  ```
+  - 127.0.0.1       company.local
+  - 127.0.0.1       two.company.local
+  - 127.0.0.1       three.company.local
+  ```
 
 - ![alt text](https://i.imgur.com/aYTWWbx.png)
 
@@ -51,13 +49,13 @@ git clone https://github.com/AmanBothra/django-multi-tenant.git
 
 - `python tenant_context_manage.py company2 migrate --database=company2`
 
-- `python tenant_context_manage.py company2 migrate --database=company3`
+- `python tenant_context_manage.py company3 migrate --database=company3`
 
 - Create superuser for company1 `python manage.py createsuperuser`
 
 - Create superuser for company2 `python tenant_context_manage.py company2 migrate createsuperuser --database=company2`
 
-- Create superuser for company3 `python tenant_context_manage.py company2 migrate createsuperuser --database=company3`
+- Create superuser for company3 `python tenant_context_manage.py company3 migrate createsuperuser --database=company3`
 
 - `python manage.py collectstatic`
 
