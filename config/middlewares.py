@@ -17,8 +17,14 @@ class TenantMiddleware:
 
 
 def get_current_db_name():
+    """
+    get current db
+    """
     return getattr(THREAD_LOCAL, "DB", None)
 
 
 def set_db_for_router(db):
+    """
+    set db router according to router
+    """
     setattr(THREAD_LOCAL, "DB", db)

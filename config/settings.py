@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-bzz$94q&eqdg$76+_6b8@8=-2(&&#u2nxmnb&a5tq%-snlhxzs
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["config.local", ".config.local"]
+ALLOWED_HOSTS = ["company.local", ".company.local"]
 
 
 # Application definition
@@ -37,13 +37,19 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "config",
+    # third party
     "rest_framework",
     "rest_framework.authtoken",
-    "config",
+    "drf_yasg",
+    "dj_rest_auth",
+    "corsheaders",
+    # django apps
     "company",
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -60,7 +66,7 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": ["templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -106,8 +112,12 @@ DATABASES = {
     },
 }
 
-DATABASE_ROUTERS = ["config.routers.AuthRouter", "config.routers.Company2", "config.routers.Company3"]
+DATABASE_ROUTERS = ["config.routers.TenantRouter"]
 
+from django.conf import settings
+
+db_name = settings.DATABASES["default"]["NAME"]
+print(db_name, "========current db")
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -144,7 +154,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = "static/"
+STATIC_ROOT = str(BASE_DIR / "static")
 
+STATICFILES_DIRS = [str(BASE_DIR / "staticfiles")]
+MEDIA_ROOT = str(BASE_DIR / "media")
+MEDIA_URL = "/media/"
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
@@ -157,3 +171,32 @@ REST_FRAMEWORK = {
     ),
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
 }
+
+SWAGGER_SETTINGS = {
+    "DOC_EXPANSION": "list",
+    "USE_SESSION_AUTH": True,
+    "SECURITY_DEFINITIONS": {
+        "JWT": {"type": "apiKey", "name": "Authorization", "in": "header"}
+    },
+    # "REFETCH_SCHEMA_WITH_AUTH": True,
+    "exclude_namespaces": [],
+}
+
+# cors-headers
+# ------------------------------------------------------------------------------
+CORS_ALLOW_ALL_ORIGINS = (
+    True  # If this is used then `CORS_ALLOWED_ORIGINS` will not have any effect
+)
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://company.local:8000",
+]  # If this is used, then not need to use `CORS_ALLOW_ALL_ORIGINS = True`
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    # match localhost with any port
+    r"^http:\/\/localhost:*([0-9]+)?$",
+    r"^https:\/\/localhost:*([0-9]+)?$",
+    r"^http:\/\/127.0.0.1:*([0-9]+)?$",
+    r"^https:\/\/127.0.0.1:*([0-9]+)?$",
+    r"^https:\/\/*:*([0-9]+)?$",
+    r"^http:\/\/*:*([0-9]+)?$",
+]
