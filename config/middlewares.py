@@ -10,7 +10,6 @@ class TenantMiddleware:
 
     def __call__(self, request):
         db = tenant_db_from_request(request)
-        print(db, "======db")
         setattr(THREAD_LOCAL, "DB", db)
         response = self.get_response(request)
         return response

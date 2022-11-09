@@ -18,7 +18,6 @@ if __name__ == "__main__":
     args = sys.argv
     db = args[1]
     with connection.cursor() as cursor:
-        print(db, "=========set_db_for_router(db)")
         set_db_for_router(db)
         del args[1]
         execute_from_command_line(args)

@@ -114,11 +114,6 @@ DATABASES = {
 
 DATABASE_ROUTERS = ["config.routers.TenantRouter"]
 
-from django.conf import settings
-
-db_name = settings.DATABASES["default"]["NAME"]
-print(db_name, "========current db")
-
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
@@ -200,3 +195,6 @@ CORS_ALLOWED_ORIGIN_REGEXES = [
     r"^https:\/\/*:*([0-9]+)?$",
     r"^http:\/\/*:*([0-9]+)?$",
 ]
+
+
+LOGIN_REDIRECT_URL = "employee-list/"

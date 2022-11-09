@@ -67,6 +67,9 @@ class Employee(models.Model):
         super(Employee, self).save(*args, **kwargs)
 
     def make_thumbnail(self):
+        """
+        convert image in thumbnail and save the thumbnail image also
+        """
 
         THUMB_SIZE = (100, 100)
 
